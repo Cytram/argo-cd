@@ -889,6 +889,14 @@ const (
 	ApplicationConditionOrphanedResourceWarning = "OrphanedResourceWarning"
 )
 
+// TargetRevision is a type which represents possible comparison results
+type TargetRevision string
+
+// Possible comparison results
+const (
+	TargetRevisionUnknown TargetRevision = "Unknown"
+)
+
 // ApplicationCondition contains details about current application condition
 type ApplicationCondition struct {
 	// Type is an application condition type

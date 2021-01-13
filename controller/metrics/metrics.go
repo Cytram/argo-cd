@@ -306,14 +306,14 @@ func collectApps(ch chan<- prometheus.Metric, app *argoappv1.Application) {
 	if healthStatus == "" {
 		healthStatus = health.HealthStatusUnknown
 	}
-	var shaStatus string
-	if app.Status.Sync.Revision != "" {
-		shaStatus = app.Status.Sync.Revision
-	} else {
-		shaStatus = "none"
+
+
+	targetRevision := app.Status.Sync.Revision
+	if targetRevision == "" {
+		targetRevision = string(argoappv1.TargetRevisionUnknown)
 	}
 
-	addGauge(descAppInfo, 1, git.NormalizeGitURL(app.Spec.Source.RepoURL), app.Spec.Destination.Server, app.Spec.Destination.Namespace, string(syncStatus), string(healthStatus), operation, shaStatus)
+	addGauge(descAppInfo, 1, git.NormalizeGitURL(app.Spec.Source.RepoURL), app.Spec.Destination.Server, app.Spec.Destination.Namespace, string(syncStatus), string(healthStatus), operation, targetRevision)
 
 	// Deprecated controller metrics
 	if os.Getenv(EnvVarLegacyControllerMetrics) == "true" {
